@@ -28,33 +28,33 @@ const heartText = [
 ];
 
 let textIndex = 0;
-let musicStarted = false; 
+let musicStarted = false;
 
-// Функция создания одного падающего сердца
+// Функция для создания одного падающего сердца сверху
 function createFallingHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.innerHTML = '❤️';
 
-    // Сердце появляется в случайном месте сверху экрана
+    // Сердце появляется **в случайном месте по горизонтали**
     heart.style.left = `${Math.random() * 100}vw`;
     heart.style.top = `-50px`;
 
-    // Настраиваем случайную скорость падения (3-5 секунд)
-    heart.style.animationDuration = `${Math.random() * 2 + 3}s`;
+    // Разная скорость падения (3 - 6 секунд)
+    heart.style.animationDuration = `${Math.random() * 3 + 3}s`;
 
     document.body.appendChild(heart);
 
     // Удаляем сердце после его падения
-    setTimeout(() => heart.remove(), 5000);
+    setTimeout(() => heart.remove(), 6000);
 
-    // Запускаем следующее сердце через случайный интервал (30-100 мс)
+    // Запускаем следующее сердце **через случайный интервал**
     setTimeout(() => {
         requestAnimationFrame(createFallingHeart);
-    }, Math.random() * 70 + 30);
+    }, Math.random() * 150 + 50); // От 50 до 200 мс
 }
 
-// Функция изменения текста при клике
+// Функция для изменения текста при клике
 function changeText(event) {
     const textElement = document.createElement('div');
     textElement.classList.add('text');

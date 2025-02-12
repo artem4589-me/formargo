@@ -30,24 +30,34 @@ const heartText = [
 let textIndex = 0;
 let musicStarted = false; // Переменная для отслеживания запуска музыки
 
-// Функция для создания сердца по месту клика
-function createHeart(event) {
+// Функция для создания одного падающего сердца сверху
+function createFallingHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.innerHTML = '❤️';
+
+    // Сердце появляется в случайном месте сверху экрана
+    heart.style.left = `${Math.random() * 100}vw`;
+    heart.style.top = `-50px`;
+
+    // Настраиваем случайную скорость падения
+    heart.style.animationDuration = `${Math.random() * 2 + 2}s`; // 2 - 4 секунды
+
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 3000); // Удаляем сердце через 3 секунды
+
+    // Удаляем сердце после его падения
+    setTimeout(() => heart.remove(), 5000);
 }
 
-// Функция для изменения текста
+// Функция для изменения текста при клике
 function changeText(event) {
     const textElement = document.createElement('div');
     textElement.classList.add('text');
     textElement.textContent = heartText[textIndex];
 
     // Позиционирование текста на месте клика
-    textElement.style.left = `${event.clientX - 50}px`; // Позиция по оси X
-    textElement.style.top = `${event.clientY - 30}px`;  // Позиция по оси Y
+    textElement.style.left = `${event.clientX - 50}px`;
+    textElement.style.top = `${event.clientY - 30}px`;
 
     document.body.appendChild(textElement);
     
@@ -55,31 +65,29 @@ function changeText(event) {
     textIndex = (textIndex + 1) % heartText.length;
 
     // Плавное исчезновение текста через 1.5 секунды
-    setTimeout(() => textElement.style.opacity = 0, 2000);
-    setTimeout(() => textElement.remove(), 2500); // Удаляем текст через 2 секунды
+    setTimeout(() => textElement.style.opacity = 0, 1500);
+    setTimeout(() => textElement.remove(), 2000);
 }
 
-// Слушаем клик по экрану, чтобы создавать сердце и менять текст
+// Слушаем клик по экрану, чтобы менять текст
 document.body.addEventListener('click', (event) => {
-    createHeart(event);
+    // Скрываем начальный текст "Нажми на экран..."
+    const initialText = document.getElementById('text');
+    if (initialText) {
+        initialText.style.display = 'none';
+    }
+
     changeText(event);
 
     // Запуск музыки при первом клике, если она еще не начала играть
     if (!musicStarted) {
         const audio = document.getElementById('background-music');
-        audio.play(); // Запуск музыки
-        musicStarted = true; // Флаг, чтобы музыка не запускалась повторно
+        audio.play();
+        musicStarted = true;
     }
 });
 
-// Создаем сердца каждую секунду, чтобы они падали сверху (увеличиваем количество)
+// Запускаем падение сердец **каждые 50 мс** (очень часто!)
 setInterval(() => {
-    for (let i = 0; i < 15; i++) { // Теперь создается 3 сердца вместо 1
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        heart.innerHTML = '❤️';
-        heart.style.left = `${Math.random() * 100}%`;
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 3000); // Удаляем сердце через 3 секунды
-    }
-}, 1000);
+    createFallingHeart();
+}, 50);

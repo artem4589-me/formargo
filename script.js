@@ -74,12 +74,14 @@ document.body.addEventListener('click', (event) => {
     }
 });
 
-// Создаем сердца каждую секунду, чтобы они падали сверху
+// Создаем сердца каждую секунду, чтобы они падали сверху (увеличиваем количество)
 setInterval(() => {
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    heart.innerHTML = '❤️';
-    heart.style.left = `${Math.random() * 100}%`;
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 3000); // Удаляем сердце через 3 секунды
+    for (let i = 0; i < 3; i++) { // Теперь создается 3 сердца вместо 1
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤️';
+        heart.style.left = `${Math.random() * 100}%`;
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 3000); // Удаляем сердце через 3 секунды
+    }
 }, 1000);

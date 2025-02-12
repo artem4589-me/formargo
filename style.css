@@ -55,7 +55,6 @@ body {
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    animation: glow 1.5s infinite alternate;
 }
 
 /* Канвас для рисования сердца */

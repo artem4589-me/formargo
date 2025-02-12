@@ -32,18 +32,18 @@ let musicStarted = false;
 let buttonAdded = false;
 let heartsEnabled = true;
 
-// Функция создания падающего сердца
+// Функция создания падающих сердец
 function createFallingHeart() {
-    if (!heartsEnabled) return; // Остановить сердца, если нажата кнопка
+    if (!heartsEnabled) return;
 
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.innerHTML = '❤️';
-
-    heart.style.left = `${Math.random() * 100}vw`;
-    heart.style.top = `-50px`;
-
     document.body.appendChild(heart);
+
+    let xPosition = Math.random() * 100;
+    heart.style.left = `${xPosition}vw`;
+    heart.style.top = `-50px`;
 
     let startTime;
     function animateHeart(timestamp) {
@@ -58,15 +58,19 @@ function createFallingHeart() {
         }
     }
     requestAnimationFrame(animateHeart);
-
-    setTimeout(createFallingHeart, Math.random() * 150 + 50);
 }
+
+// Запускаем падение сердец каждую 300 мс
+let heartInterval = setInterval(() => {
+    createFallingHeart();
+}, 300);
 
 // Функция удаления сердец и начала рисования неонового сердца
 function showBigHeart() {
     heartsEnabled = false; // Отключаем генерацию новых сердец
+    clearInterval(heartInterval); // Останавливаем создание новых сердец
     document.querySelectorAll('.heart').forEach(heart => heart.remove()); // Удаляем уже созданные сердца
-    document.body.innerHTML = ''; // Удаляем всё остальное
+    document.body.innerHTML = ''; // Очищаем экран
 
     // Создаём канвас
     const canvas = document.createElement('canvas');
@@ -162,9 +166,6 @@ function changeText(event) {
     setTimeout(() => textElement.style.opacity = 0, 1500);
     setTimeout(() => textElement.remove(), 2000);
 }
-
-// Запускаем падающие сердца
-createFallingHeart();
 
 // Слушаем клик по экрану, чтобы менять текст
 document.body.addEventListener('click', (event) => {

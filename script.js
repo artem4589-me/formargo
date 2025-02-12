@@ -29,6 +29,7 @@ const heartText = [
 
 let textIndex = 0;
 let musicStarted = false;
+let buttonAdded = false; // Флаг, чтобы кнопка не появлялась дважды
 
 // Функция создания падающего сердца
 function createFallingHeart() {
@@ -58,8 +59,11 @@ function createFallingHeart() {
     setTimeout(createFallingHeart, Math.random() * 150 + 50);
 }
 
-// Функция для показа кнопки после последнего текста
+// Функция показа кнопки после последнего текста
 function showButton() {
+    if (buttonAdded) return; // Если кнопка уже добавлена, ничего не делаем
+    buttonAdded = true;
+
     const button = document.createElement('button');
     button.innerText = "Нажми на меня";
     button.classList.add('special-button');
@@ -76,7 +80,7 @@ function showBigHeart() {
 
 // Функция изменения текста при клике
 function changeText(event) {
-    if (textIndex >= heartText.length) return;
+    if (textIndex >= heartText.length) return; // Если все фразы закончились, не делаем ничего
 
     const textElement = document.createElement('div');
     textElement.classList.add('text');
@@ -89,7 +93,8 @@ function changeText(event) {
 
     textIndex++;
 
-    if (textIndex >= heartText.length) {
+    // Если это последняя фраза, показать кнопку
+    if (textIndex === heartText.length) {
         setTimeout(showButton, 1000);
     }
 

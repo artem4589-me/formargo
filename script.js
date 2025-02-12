@@ -28,7 +28,7 @@ const heartText = [
 ];
 
 let textIndex = 0;
-let musicStarted = false;
+let musicStarted = false; // Переменная для отслеживания запуска музыки
 
 // Функция для создания сердца по месту клика
 function createHeart(event) {
@@ -57,8 +57,8 @@ function changeText(event) {
     textIndex = (textIndex + 1) % heartText.length;
 
     // Плавное исчезновение текста через 1.5 секунды
-    setTimeout(() => textElement.style.opacity = 0, 1500);
-    setTimeout(() => textElement.remove(), 2000); // Удаляем текст через 2 секунды
+    setTimeout(() => textElement.style.opacity = 0, 3000);
+    setTimeout(() => textElement.remove(), 3500); // Удаляем текст через 2 секунды
 }
 
 // Слушаем клик по экрану, чтобы создавать сердце и менять текст

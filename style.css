@@ -15,6 +15,7 @@ body {
     align-items: center;
     flex-direction: column;
     text-align: center;
+    position: relative; /* Нужно, чтобы абсолютное позиционирование внуков было относительно body */
 }
 
 .header-text {

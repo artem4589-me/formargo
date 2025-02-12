@@ -30,31 +30,39 @@ const heartText = [
 let textIndex = 0;
 let musicStarted = false;
 
-// Функция для создания одного падающего сердца сверху
+// Функция создания одного падающего сердца
 function createFallingHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.innerHTML = '❤️';
 
-    // Сердце появляется **в случайном месте по горизонтали**
+    // Сердце появляется **в случайном месте сверху**
     heart.style.left = `${Math.random() * 100}vw`;
     heart.style.top = `-50px`;
 
-    // Разная скорость падения (3 - 6 секунд)
-    heart.style.animationDuration = `${Math.random() * 3 + 3}s`;
-
+    // Добавляем сердце на страницу
     document.body.appendChild(heart);
 
-    // Удаляем сердце после его падения
-    setTimeout(() => heart.remove(), 6000);
+    // Двигаем сердце вниз вручную, потому что Safari плохо работает с `@keyframes`
+    let startTime;
+    function animateHeart(timestamp) {
+        if (!startTime) startTime = timestamp;
+        let progress = (timestamp - startTime) / 3000; // 3 секунды падения
 
-    // Запускаем следующее сердце **через случайный интервал**
-    setTimeout(() => {
-        requestAnimationFrame(createFallingHeart);
-    }, Math.random() * 150 + 50); // От 50 до 200 мс
+        if (progress < 1) {
+            heart.style.transform = `translateY(${progress * 100}vh)`;
+            requestAnimationFrame(animateHeart);
+        } else {
+            heart.remove(); // Удаляем сердце после падения
+        }
+    }
+    requestAnimationFrame(animateHeart);
+
+    // Запускаем следующее сердце **с задержкой 50-200 мс**
+    setTimeout(createFallingHeart, Math.random() * 150 + 50);
 }
 
-// Функция для изменения текста при клике
+// Функция изменения текста при клике
 function changeText(event) {
     const textElement = document.createElement('div');
     textElement.classList.add('text');

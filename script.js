@@ -32,47 +32,63 @@ let musicStarted = false;
 let buttonAdded = false;
 let heartsEnabled = true;
 
-// Функция создания падающих сердец
+// Функция создания падающего сердца
 function createFallingHeart() {
     if (!heartsEnabled) return;
 
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.innerHTML = '❤️';
-    document.body.appendChild(heart);
 
     let xPosition = Math.random() * 100;
     heart.style.left = `${xPosition}vw`;
     heart.style.top = `-50px`;
 
-    let startTime;
-    function animateHeart(timestamp) {
-        if (!startTime) startTime = timestamp;
-        let progress = (timestamp - startTime) / 3000;
+    document.body.appendChild(heart);
 
-        if (progress < 1) {
-            heart.style.transform = `translateY(${progress * 100}vh)`;
+    let speed = Math.random() * 2 + 1; // Скорость падения
+    let position = -50;
+
+    function animateHeart() {
+        if (!heartsEnabled) {
+            heart.remove();
+            return;
+        }
+        position += speed;
+        heart.style.transform = `translateY(${position}px)`;
+
+        if (position < window.innerHeight) {
             requestAnimationFrame(animateHeart);
         } else {
             heart.remove();
         }
     }
     requestAnimationFrame(animateHeart);
+
+    setTimeout(createFallingHeart, Math.random() * 200 + 50);
 }
 
-// Запускаем падение сердец каждую 300 мс
-let heartInterval = setInterval(() => {
-    createFallingHeart();
-}, 300);
+// Запускаем падение сердец
+createFallingHeart();
 
-// Функция удаления сердец и начала рисования неонового сердца
+// Функция показа кнопки после последнего текста
+function showButton() {
+    if (buttonAdded) return;
+    buttonAdded = true;
+
+    const button = document.createElement('button');
+    button.innerText = "Нажми на меня";
+    button.classList.add('special-button');
+    button.onclick = showBigHeart;
+    document.body.appendChild(button);
+}
+
+// Функция анимации большого неонового сердца
 function showBigHeart() {
-    heartsEnabled = false; // Отключаем генерацию новых сердец
-    clearInterval(heartInterval); // Останавливаем создание новых сердец
-    document.querySelectorAll('.heart').forEach(heart => heart.remove()); // Удаляем уже созданные сердца
-    document.body.innerHTML = ''; // Очищаем экран
+    heartsEnabled = false;
+    document.querySelectorAll('.heart').forEach(heart => heart.remove());
+    document.body.innerHTML = '';
 
-    // Создаём канвас
     const canvas = document.createElement('canvas');
     canvas.id = "heartCanvas";
     document.body.appendChild(canvas);
@@ -130,18 +146,6 @@ function showBigHeart() {
     }
 
     animateHeart();
-}
-
-// Функция показа кнопки после последнего текста
-function showButton() {
-    if (buttonAdded) return;
-    buttonAdded = true;
-
-    const button = document.createElement('button');
-    button.innerText = "Нажми на меня";
-    button.classList.add('special-button');
-    button.onclick = showBigHeart;
-    document.body.appendChild(button);
 }
 
 // Функция изменения текста при клике

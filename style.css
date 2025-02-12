@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+    background: pink;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    position: relative;
+}
+
+.heart {
+    position: absolute;
+    font-size: 2rem;
+    animation: fall 3s infinite;
+    cursor: pointer;
+}
+
+@keyframes fall {
+    0% {
+        top: -50px;
+        opacity: 1;
+    }
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
+}
+
+.text {
+    position: absolute;
+    bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+    width: 100%;
+}

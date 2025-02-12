@@ -59,6 +59,11 @@ function changeText() {
 document.body.addEventListener('click', (event) => {
     createHeart(event);
     changeText();
+    // Запуск музыки по клику (если музыка не играет)
+    const audio = document.getElementById('background-music');
+    if (audio.paused) {
+        audio.play();
+    }
 });
 
 // Создаем сердца каждую секунду, чтобы они падали сверху

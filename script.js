@@ -30,21 +30,16 @@ const heartText = [
 let textIndex = 0;
 let musicStarted = false; // Переменная для отслеживания запуска музыки
 
-// Функция для создания падающих сердец сверху вниз
-function createFallingHeart() {
+// Функция для создания сердца по месту клика
+function createHeart(event) {
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.innerHTML = '❤️';
-
-    // Позиционируем сердца случайным образом по горизонтали
-    heart.style.left = `${Math.random() * 100}vw`;
-    heart.style.animationDuration = `${Math.random() * 3 + 3}s`; // Разная скорость падения
-
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 5000); // Удаляем сердце через 5 секунд
+    setTimeout(() => heart.remove(), 3000); // Удаляем сердце через 3 секунды
 }
 
-// Функция для изменения текста при клике
+// Функция для изменения текста
 function changeText(event) {
     const textElement = document.createElement('div');
     textElement.classList.add('text');
@@ -64,14 +59,9 @@ function changeText(event) {
     setTimeout(() => textElement.remove(), 2000); // Удаляем текст через 2 секунды
 }
 
-// Слушаем клик по экрану, чтобы менять текст
+// Слушаем клик по экрану, чтобы создавать сердце и менять текст
 document.body.addEventListener('click', (event) => {
-    // Скрываем начальный текст "Нажми на экран..."
-    const initialText = document.getElementById('text');
-    if (initialText) {
-        initialText.style.display = 'none'; // Убираем текст при первом клике
-    }
-
+    createHeart(event);
     changeText(event);
 
     // Запуск музыки при первом клике, если она еще не начала играть
@@ -82,9 +72,19 @@ document.body.addEventListener('click', (event) => {
     }
 });
 
-// Запускаем падение сердец сверху каждые 100 мс (раньше было 1 сек)
+// Создаем сердца каждую секунду, чтобы они падали сверху (с 20 сердечками)
 setInterval(() => {
-    for (let i = 0; i < 20; i++) {
-        createFallingHeart();
+    for (let i = 0; i < 20; i++) { // Теперь создается 20 сердец каждый раз
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤️';
+
+        // Позиционируем сердца случайным образом по горизонтали
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.animationDuration = `${Math.random() * 3 + 3}s`; // Разная скорость падения
+        heart.style.animationDelay = `${Math.random() * 2}s`; // Разная задержка начала падения
+
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 3000); // Удаляем сердце через 3 секунды
     }
-}, 100);
+}, 1000); // Падение сердец каждую 1 секунду

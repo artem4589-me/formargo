@@ -30,54 +30,69 @@ const heartText = [
 let textIndex = 0;
 let musicStarted = false;
 
-// Функция создания одного падающего сердца
+// Функция создания падающего сердца
 function createFallingHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.innerHTML = '❤️';
 
-    // Сердце появляется **в случайном месте сверху**
     heart.style.left = `${Math.random() * 100}vw`;
     heart.style.top = `-50px`;
 
-    // Добавляем сердце на страницу
     document.body.appendChild(heart);
 
-    // Двигаем сердце вниз вручную, потому что Safari плохо работает с `@keyframes`
     let startTime;
     function animateHeart(timestamp) {
         if (!startTime) startTime = timestamp;
-        let progress = (timestamp - startTime) / 3000; // 3 секунды падения
+        let progress = (timestamp - startTime) / 3000;
 
         if (progress < 1) {
             heart.style.transform = `translateY(${progress * 100}vh)`;
             requestAnimationFrame(animateHeart);
         } else {
-            heart.remove(); // Удаляем сердце после падения
+            heart.remove();
         }
     }
     requestAnimationFrame(animateHeart);
 
-    // Запускаем следующее сердце **с задержкой 50-200 мс**
     setTimeout(createFallingHeart, Math.random() * 150 + 50);
+}
+
+// Функция для показа кнопки после последнего текста
+function showButton() {
+    const button = document.createElement('button');
+    button.innerText = "Нажми на меня";
+    button.classList.add('special-button');
+    button.onclick = showBigHeart;
+    document.body.appendChild(button);
+}
+
+// Функция анимации большого космического сердца
+function showBigHeart() {
+    const bigHeart = document.createElement('div');
+    bigHeart.classList.add('big-heart');
+    document.body.appendChild(bigHeart);
 }
 
 // Функция изменения текста при клике
 function changeText(event) {
+    if (textIndex >= heartText.length) return;
+
     const textElement = document.createElement('div');
     textElement.classList.add('text');
     textElement.textContent = heartText[textIndex];
 
-    // Позиционирование текста на месте клика
     textElement.style.left = `${event.clientX - 50}px`;
     textElement.style.top = `${event.clientY - 30}px`;
 
     document.body.appendChild(textElement);
-    
-    // Переход к следующему тексту
-    textIndex = (textIndex + 1) % heartText.length;
 
-    // Плавное исчезновение текста через 1.5 секунды
+    textIndex++;
+
+    if (textIndex >= heartText.length) {
+        setTimeout(showButton, 1000);
+    }
+
     setTimeout(() => textElement.style.opacity = 0, 1500);
     setTimeout(() => textElement.remove(), 2000);
 }
@@ -91,7 +106,6 @@ document.body.addEventListener('click', (event) => {
 
     changeText(event);
 
-    // Запуск музыки при первом клике, если она еще не начала играть
     if (!musicStarted) {
         const audio = document.getElementById('background-music');
         audio.play();

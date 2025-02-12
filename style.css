@@ -51,7 +51,7 @@ body {
     animation: glow 1.5s infinite alternate;
 }
 
-/* Космическое сердце */
+/* Канвас для рисования сердца */
 canvas {
     position: absolute;
     top: 0;

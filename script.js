@@ -31,43 +31,67 @@ let textIndex = 0;
 let musicStarted = false;
 let buttonAdded = false;
 
-// Функция скрытия всего и появления анимированного сердца
+// Функция удаления всего и начала рисования сердца
 function showBigHeart() {
-    document.body.innerHTML = ''; // Удаляем всё кроме музыки
-    const heartCanvas = document.createElement('canvas');
-    heartCanvas.id = "heartCanvas";
-    document.body.appendChild(heartCanvas);
+    document.body.innerHTML = ''; // Очищаем экран
+    const canvas = document.createElement('canvas');
+    canvas.id = "heartCanvas";
+    document.body.appendChild(canvas);
 
-    // Настраиваем холст
-    const canvas = document.getElementById("heartCanvas");
+    // Настройки холста
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    let t = 0;
-
-    function drawHeart() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        ctx.strokeStyle = `hsl(${(t * 2) % 360}, 100%, 70%)`;
-        ctx.lineWidth = 2;
+    function drawHeart(x, y, size, color) {
+        ctx.save();
         ctx.beginPath();
+        let topCurveHeight = size * 0.3;
+        ctx.moveTo(x, y + topCurveHeight);
 
-        for (let i = 0; i < 50; i++) {
-            let angle = (i / 50) * Math.PI * 2;
-            let x = 250 * Math.pow(Math.sin(angle), 3);
-            let y = -250 * (0.8125 * Math.cos(angle) - 0.3125 * Math.cos(2 * angle) - 0.125 * Math.cos(3 * angle) - 0.0625 * Math.cos(4 * angle));
-            ctx.lineTo(canvas.width / 2 + x, canvas.height / 2 + y);
-        }
+        ctx.bezierCurveTo(
+            x, y,
+            x - size / 2, y,
+            x - size / 2, y + topCurveHeight
+        );
+
+        ctx.bezierCurveTo(
+            x - size / 2, y + (size + topCurveHeight) / 2,
+            x, y + (size + topCurveHeight) / 2,
+            x, y + size
+        );
+
+        ctx.bezierCurveTo(
+            x, y + (size + topCurveHeight) / 2,
+            x + size / 2, y + (size + topCurveHeight) / 2,
+            x + size / 2, y + topCurveHeight
+        );
+
+        ctx.bezierCurveTo(
+            x + size / 2, y,
+            x, y,
+            x, y + topCurveHeight
+        );
 
         ctx.closePath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 5;
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 15;
         ctx.stroke();
-
-        t += 0.5;
-        requestAnimationFrame(drawHeart);
+        ctx.restore();
     }
 
-    drawHeart();
+    let t = 0;
+    function animateHeart() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let color = `hsl(${t % 360}, 100%, 70%)`;
+        drawHeart(canvas.width / 2, canvas.height / 2 - 50, 200, color);
+        t += 2;
+        requestAnimationFrame(animateHeart);
+    }
+
+    animateHeart();
 }
 
 // Функция показа кнопки после последнего текста

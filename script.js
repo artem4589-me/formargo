@@ -55,8 +55,8 @@ function changeText(event) {
     textIndex = (textIndex + 1) % heartText.length;
 
     // Плавное исчезновение текста через 1.5 секунды
-    setTimeout(() => textElement.style.opacity = 0, 1500);
-    setTimeout(() => textElement.remove(), 2000); // Удаляем текст через 2 секунды
+    setTimeout(() => textElement.style.opacity = 0, 2000);
+    setTimeout(() => textElement.remove(), 2500); // Удаляем текст через 2 секунды
 }
 
 // Слушаем клик по экрану, чтобы создавать сердце и менять текст

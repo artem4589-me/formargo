@@ -35,7 +35,8 @@ function createHeart(event) {
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.innerHTML = '❤️';
-    heart.style.left = `${Math.random() * 100}%`; // Позиционируем сердце случайно по горизонтали
+    heart.style.left = `${event.clientX - 25}px`; // Позиционирование по оси X
+    heart.style.top = `${event.clientY - 25}px`;  // Позиционирование по оси Y
     document.body.appendChild(heart);
     setTimeout(() => heart.remove(), 3000); // Удаляем сердце через 3 секунды
 }
@@ -62,12 +63,6 @@ function changeText(event) {
 
 // Слушаем клик по экрану, чтобы создавать сердце и менять текст
 document.body.addEventListener('click', (event) => {
-    // Скрываем начальный текст "Нажми на экран..."
-    const initialText = document.getElementById('text');
-    if (initialText) {
-        initialText.style.display = 'none'; // Убираем текст при первом клике
-    }
-
     createHeart(event);
     changeText(event);
 
@@ -81,7 +76,7 @@ document.body.addEventListener('click', (event) => {
 
 // Создаем сердца каждую секунду, чтобы они падали сверху (с 20 сердечками)
 setInterval(() => {
-    for (let i = 0; i < 15; i++) { // Теперь создается 20 сердец каждый раз
+    for (let i = 0; i < 20; i++) { // Теперь создается 20 сердец каждый раз
         const heart = document.createElement('div');
         heart.classList.add('heart');
         heart.innerHTML = '❤️';

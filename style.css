@@ -18,9 +18,9 @@ body {
 }
 
 .header-text {
-    font-family: 'Pacifico', cursive; /* Используем красивый шрифт */
+    font-family: 'Pacifico', cursive;
     font-size: 36px;
-    color: #ff66b2; /* Красивый розовый цвет */
+    color: #ff66b2;
     position: absolute;
     top: 20px;
     width: 100%;
@@ -48,11 +48,10 @@ body {
 
 .text {
     position: absolute;
-    bottom: 20px;
-    font-size: 24px;
-    width: 100%;
-    z-index: 2;
+    font-size: 18px; /* Меньший размер текста */
+    color: white;
+    text-align: center;
+    pointer-events: none;
     opacity: 1;
     transition: opacity 0.5s;
-    pointer-events: none;
 }

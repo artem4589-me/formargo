@@ -28,7 +28,7 @@ const heartText = [
 ];
 
 let textIndex = 0;
-let musicStarted = false; // Переменная для отслеживания запуска музыки
+let musicStarted = false;
 
 // Функция для создания сердца по месту клика
 function createHeart(event) {
@@ -42,24 +42,29 @@ function createHeart(event) {
 }
 
 // Функция для изменения текста
-function changeText() {
-    const textElement = document.getElementById('text');
+function changeText(event) {
+    const textElement = document.createElement('div');
+    textElement.classList.add('text');
     textElement.textContent = heartText[textIndex];
 
+    // Позиционирование текста на месте клика
+    textElement.style.left = `${event.clientX - 50}px`; // Позиция по оси X
+    textElement.style.top = `${event.clientY - 30}px`;  // Позиция по оси Y
+
+    document.body.appendChild(textElement);
+    
     // Переход к следующему тексту
     textIndex = (textIndex + 1) % heartText.length;
 
-    // Меняем прозрачность текста, чтобы эффект был плавным
-    textElement.style.opacity = 1;
-    setTimeout(() => {
-        textElement.style.opacity = 0;
-    }, 1500);
+    // Плавное исчезновение текста через 1.5 секунды
+    setTimeout(() => textElement.style.opacity = 0, 1500);
+    setTimeout(() => textElement.remove(), 2000); // Удаляем текст через 2 секунды
 }
 
 // Слушаем клик по экрану, чтобы создавать сердце и менять текст
 document.body.addEventListener('click', (event) => {
     createHeart(event);
-    changeText();
+    changeText(event);
 
     // Запуск музыки при первом клике, если она еще не начала играть
     if (!musicStarted) {

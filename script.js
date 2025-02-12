@@ -66,7 +66,7 @@ document.body.addEventListener('click', (event) => {
     // Скрываем начальный текст "Нажми на экран..."
     const initialText = document.getElementById('text');
     if (initialText) {
-        initialText.style.display = 'none';
+        initialText.style.display = 'none'; // Убираем текст при первом клике
     }
 
     createHeart(event);

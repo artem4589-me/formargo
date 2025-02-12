@@ -38,9 +38,11 @@ body {
 
 @keyframes fall {
     0% {
+        top: -50px;
         opacity: 1;
     }
     100% {
+        top: 100%;
         opacity: 0;
     }
 }

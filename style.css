@@ -17,6 +17,17 @@ body {
     text-align: center;
 }
 
+.header-text {
+    font-family: 'Pacifico', cursive; /* Используем красивый шрифт */
+    font-size: 36px;
+    color: #ff66b2; /* Красивый розовый цвет */
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    text-align: center;
+    z-index: 2;
+}
+
 .heart {
     position: absolute;
     font-size: 2rem;

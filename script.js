@@ -29,39 +29,50 @@ const heartText = [
 
 let textIndex = 0;
 let musicStarted = false;
-let buttonAdded = false; // Флаг, чтобы кнопка не появлялась дважды
+let buttonAdded = false;
 
-// Функция создания падающего сердца
-function createFallingHeart() {
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    heart.innerHTML = '❤️';
+// Функция скрытия всего и появления анимированного сердца
+function showBigHeart() {
+    document.body.innerHTML = ''; // Удаляем всё кроме музыки
+    const heartCanvas = document.createElement('canvas');
+    heartCanvas.id = "heartCanvas";
+    document.body.appendChild(heartCanvas);
 
-    heart.style.left = `${Math.random() * 100}vw`;
-    heart.style.top = `-50px`;
+    // Настраиваем холст
+    const canvas = document.getElementById("heartCanvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    document.body.appendChild(heart);
+    let t = 0;
 
-    let startTime;
-    function animateHeart(timestamp) {
-        if (!startTime) startTime = timestamp;
-        let progress = (timestamp - startTime) / 3000;
+    function drawHeart() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        if (progress < 1) {
-            heart.style.transform = `translateY(${progress * 100}vh)`;
-            requestAnimationFrame(animateHeart);
-        } else {
-            heart.remove();
+        ctx.strokeStyle = `hsl(${(t * 2) % 360}, 100%, 70%)`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+
+        for (let i = 0; i < 50; i++) {
+            let angle = (i / 50) * Math.PI * 2;
+            let x = 250 * Math.pow(Math.sin(angle), 3);
+            let y = -250 * (0.8125 * Math.cos(angle) - 0.3125 * Math.cos(2 * angle) - 0.125 * Math.cos(3 * angle) - 0.0625 * Math.cos(4 * angle));
+            ctx.lineTo(canvas.width / 2 + x, canvas.height / 2 + y);
         }
-    }
-    requestAnimationFrame(animateHeart);
 
-    setTimeout(createFallingHeart, Math.random() * 150 + 50);
+        ctx.closePath();
+        ctx.stroke();
+
+        t += 0.5;
+        requestAnimationFrame(drawHeart);
+    }
+
+    drawHeart();
 }
 
 // Функция показа кнопки после последнего текста
 function showButton() {
-    if (buttonAdded) return; // Если кнопка уже добавлена, ничего не делаем
+    if (buttonAdded) return;
     buttonAdded = true;
 
     const button = document.createElement('button');
@@ -71,16 +82,9 @@ function showButton() {
     document.body.appendChild(button);
 }
 
-// Функция анимации большого космического сердца
-function showBigHeart() {
-    const bigHeart = document.createElement('div');
-    bigHeart.classList.add('big-heart');
-    document.body.appendChild(bigHeart);
-}
-
 // Функция изменения текста при клике
 function changeText(event) {
-    if (textIndex >= heartText.length) return; // Если все фразы закончились, не делаем ничего
+    if (textIndex >= heartText.length) return;
 
     const textElement = document.createElement('div');
     textElement.classList.add('text');
@@ -93,7 +97,6 @@ function changeText(event) {
 
     textIndex++;
 
-    // Если это последняя фраза, показать кнопку
     if (textIndex === heartText.length) {
         setTimeout(showButton, 1000);
     }
@@ -117,6 +120,3 @@ document.body.addEventListener('click', (event) => {
         musicStarted = true;
     }
 });
-
-// Запускаем первое сердце
-createFallingHeart();

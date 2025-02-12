@@ -25,13 +25,6 @@ body {
     z-index: 2;
 }
 
-.heart {
-    position: absolute;
-    font-size: 2rem;
-    top: -50px;
-    transition: transform linear;
-}
-
 .text {
     position: absolute;
     font-size: 18px;
@@ -58,37 +51,11 @@ body {
     animation: glow 1.5s infinite alternate;
 }
 
-/* Анимированное сияющее сердце */
-.big-heart {
+/* Космическое сердце */
+canvas {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 200px;
-    height: 200px;
-    background: linear-gradient(90deg, #00ffff, #ff00ff);
-    clip-path: path("M150 60 C 180 -20, 300 -20, 300 100 C 300 180, 200 250, 150 300 C 100 250, 0 180, 0 100 C 0 -20, 120 -20, 150 60 Z");
-    transform: translate(-50%, -50%);
-    animation: pulse 3s infinite alternate, rotate 5s infinite linear;
-}
-
-/* Анимация пульсации */
-@keyframes pulse {
-    0% {
-        transform: scale(1) translate(-50%, -50%);
-        filter: brightness(1);
-    }
-    100% {
-        transform: scale(1.2) translate(-50%, -50%);
-        filter: brightness(2);
-    }
-}
-
-/* Анимация вращения */
-@keyframes rotate {
-    from {
-        transform: rotate(0deg) translate(-50%, -50%);
-    }
-    to {
-        transform: rotate(360deg) translate(-50%, -50%);
-    }
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
 }

@@ -74,14 +74,19 @@ document.body.addEventListener('click', (event) => {
     }
 });
 
-// Создаем сердца каждую секунду, чтобы они падали сверху (увеличиваем количество)
+// Создаем сердца каждую секунду, чтобы они падали сверху (с 20 сердечками)
 setInterval(() => {
-    for (let i = 0; i < 3; i++) { // Теперь создается 3 сердца вместо 1
+    for (let i = 0; i < 20; i++) { // Теперь создается 20 сердец каждый раз
         const heart = document.createElement('div');
         heart.classList.add('heart');
         heart.innerHTML = '❤️';
+
+        // Позиционируем сердца случайным образом по горизонтали
         heart.style.left = `${Math.random() * 100}%`;
+        heart.style.animationDuration = `${Math.random() * 3 + 3}s`; // Разная скорость падения
+        heart.style.animationDelay = `${Math.random() * 2}s`; // Разная задержка начала падения
+
         document.body.appendChild(heart);
         setTimeout(() => heart.remove(), 3000); // Удаляем сердце через 3 секунды
     }
-}, 500);
+}, 1000); // Падение сердец каждую 1 секунду

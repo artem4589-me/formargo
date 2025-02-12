@@ -30,15 +30,49 @@ const heartText = [
 let textIndex = 0;
 let musicStarted = false;
 let buttonAdded = false;
+let heartsEnabled = true;
 
-// Функция удаления всего и начала рисования сердца
+// Функция создания падающего сердца
+function createFallingHeart() {
+    if (!heartsEnabled) return; // Остановить сердца, если нажата кнопка
+
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.innerHTML = '❤️';
+
+    heart.style.left = `${Math.random() * 100}vw`;
+    heart.style.top = `-50px`;
+
+    document.body.appendChild(heart);
+
+    let startTime;
+    function animateHeart(timestamp) {
+        if (!startTime) startTime = timestamp;
+        let progress = (timestamp - startTime) / 3000;
+
+        if (progress < 1) {
+            heart.style.transform = `translateY(${progress * 100}vh)`;
+            requestAnimationFrame(animateHeart);
+        } else {
+            heart.remove();
+        }
+    }
+    requestAnimationFrame(animateHeart);
+
+    setTimeout(createFallingHeart, Math.random() * 150 + 50);
+}
+
+// Функция удаления сердец и начала рисования неонового сердца
 function showBigHeart() {
-    document.body.innerHTML = ''; // Очищаем экран
+    heartsEnabled = false; // Отключаем генерацию новых сердец
+    document.querySelectorAll('.heart').forEach(heart => heart.remove()); // Удаляем уже созданные сердца
+    document.body.innerHTML = ''; // Удаляем всё остальное
+
+    // Создаём канвас
     const canvas = document.createElement('canvas');
     canvas.id = "heartCanvas";
     document.body.appendChild(canvas);
 
-    // Настройки холста
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -128,6 +162,9 @@ function changeText(event) {
     setTimeout(() => textElement.style.opacity = 0, 1500);
     setTimeout(() => textElement.remove(), 2000);
 }
+
+// Запускаем падающие сердца
+createFallingHeart();
 
 // Слушаем клик по экрану, чтобы менять текст
 document.body.addEventListener('click', (event) => {

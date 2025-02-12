@@ -10,8 +10,12 @@ body {
     overflow: hidden;
     height: 100vh;
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     text-align: center;
-    position: relative;
+    position: relative; /* Нужно, чтобы абсолютное позиционирование внуков было относительно body */
 }
 
 .header-text {
@@ -28,17 +32,17 @@ body {
 .heart {
     position: absolute;
     font-size: 2rem;
-    top: -50px; /* Сердца начинаются за пределами экрана */
-    animation: fall linear infinite;
+    animation: fall 3s infinite;
+    cursor: pointer;
 }
 
 @keyframes fall {
     0% {
-        transform: translateY(0);
+        top: -50px;
         opacity: 1;
     }
     100% {
-        transform: translateY(100vh); /* Сердца падают вниз */
+        top: 100%;
         opacity: 0;
     }
 }

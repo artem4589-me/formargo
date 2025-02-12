@@ -28,9 +28,9 @@ const heartText = [
 ];
 
 let textIndex = 0;
-let musicStarted = false; // Переменная для отслеживания запуска музыки
+let musicStarted = false; 
 
-// Функция для создания одного падающего сердца сверху
+// Функция создания одного падающего сердца
 function createFallingHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
@@ -40,16 +40,21 @@ function createFallingHeart() {
     heart.style.left = `${Math.random() * 100}vw`;
     heart.style.top = `-50px`;
 
-    // Настраиваем случайную скорость падения
-    heart.style.animationDuration = `${Math.random() * 2 + 2}s`; // 2 - 4 секунды
+    // Настраиваем случайную скорость падения (3-5 секунд)
+    heart.style.animationDuration = `${Math.random() * 2 + 3}s`;
 
     document.body.appendChild(heart);
 
     // Удаляем сердце после его падения
     setTimeout(() => heart.remove(), 5000);
+
+    // Запускаем следующее сердце через случайный интервал (30-100 мс)
+    setTimeout(() => {
+        requestAnimationFrame(createFallingHeart);
+    }, Math.random() * 70 + 30);
 }
 
-// Функция для изменения текста при клике
+// Функция изменения текста при клике
 function changeText(event) {
     const textElement = document.createElement('div');
     textElement.classList.add('text');
@@ -71,7 +76,6 @@ function changeText(event) {
 
 // Слушаем клик по экрану, чтобы менять текст
 document.body.addEventListener('click', (event) => {
-    // Скрываем начальный текст "Нажми на экран..."
     const initialText = document.getElementById('text');
     if (initialText) {
         initialText.style.display = 'none';
@@ -87,7 +91,5 @@ document.body.addEventListener('click', (event) => {
     }
 });
 
-// Запускаем падение сердец **каждые 50 мс** (очень часто!)
-setInterval(() => {
-    createFallingHeart();
-}, 50);
+// Запускаем первое сердце
+createFallingHeart();

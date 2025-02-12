@@ -29,144 +29,55 @@ const heartText = [
 
 let textIndex = 0;
 let musicStarted = false;
-let buttonAdded = false;
-let heartsEnabled = true;
 
-// Функция создания падающего сердца
+// Функция создания одного падающего сердца
 function createFallingHeart() {
-    if (!heartsEnabled) return;
-
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.innerHTML = '❤️';
 
-    let xPosition = Math.random() * 100;
-    heart.style.left = `${xPosition}vw`;
+    // Сердце появляется **в случайном месте сверху**
+    heart.style.left = `${Math.random() * 100}vw`;
     heart.style.top = `-50px`;
 
+    // Добавляем сердце на страницу
     document.body.appendChild(heart);
 
-    let speed = Math.random() * 2 + 1; // Скорость падения
-    let position = -50;
+    // Двигаем сердце вниз вручную, потому что Safari плохо работает с `@keyframes`
+    let startTime;
+    function animateHeart(timestamp) {
+        if (!startTime) startTime = timestamp;
+        let progress = (timestamp - startTime) / 3000; // 3 секунды падения
 
-    function animateHeart() {
-        if (!heartsEnabled) {
-            heart.remove();
-            return;
-        }
-        position += speed;
-        heart.style.transform = `translateY(${position}px)`;
-
-        if (position < window.innerHeight) {
+        if (progress < 1) {
+            heart.style.transform = `translateY(${progress * 100}vh)`;
             requestAnimationFrame(animateHeart);
         } else {
-            heart.remove();
+            heart.remove(); // Удаляем сердце после падения
         }
     }
     requestAnimationFrame(animateHeart);
 
-    setTimeout(createFallingHeart, Math.random() * 200 + 50);
-}
-
-// Запускаем падение сердец
-createFallingHeart();
-
-// Функция показа кнопки после последнего текста
-function showButton() {
-    if (buttonAdded) return;
-    buttonAdded = true;
-
-    const button = document.createElement('button');
-    button.innerText = "Нажми на меня";
-    button.classList.add('special-button');
-    button.onclick = showBigHeart;
-    document.body.appendChild(button);
-}
-
-// Функция анимации большого неонового сердца
-function showBigHeart() {
-    heartsEnabled = false;
-    document.querySelectorAll('.heart').forEach(heart => heart.remove());
-    document.body.innerHTML = '';
-
-    const canvas = document.createElement('canvas');
-    canvas.id = "heartCanvas";
-    document.body.appendChild(canvas);
-
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    function drawHeart(x, y, size, color) {
-        ctx.save();
-        ctx.beginPath();
-        let topCurveHeight = size * 0.3;
-        ctx.moveTo(x, y + topCurveHeight);
-
-        ctx.bezierCurveTo(
-            x, y,
-            x - size / 2, y,
-            x - size / 2, y + topCurveHeight
-        );
-
-        ctx.bezierCurveTo(
-            x - size / 2, y + (size + topCurveHeight) / 2,
-            x, y + (size + topCurveHeight) / 2,
-            x, y + size
-        );
-
-        ctx.bezierCurveTo(
-            x, y + (size + topCurveHeight) / 2,
-            x + size / 2, y + (size + topCurveHeight) / 2,
-            x + size / 2, y + topCurveHeight
-        );
-
-        ctx.bezierCurveTo(
-            x + size / 2, y,
-            x, y,
-            x, y + topCurveHeight
-        );
-
-        ctx.closePath();
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 5;
-        ctx.shadowColor = color;
-        ctx.shadowBlur = 15;
-        ctx.stroke();
-        ctx.restore();
-    }
-
-    let t = 0;
-    function animateHeart() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        let color = `hsl(${t % 360}, 100%, 70%)`;
-        drawHeart(canvas.width / 2, canvas.height / 2 - 50, 200, color);
-        t += 2;
-        requestAnimationFrame(animateHeart);
-    }
-
-    animateHeart();
+    // Запускаем следующее сердце **с задержкой 50-200 мс**
+    setTimeout(createFallingHeart, Math.random() * 150 + 50);
 }
 
 // Функция изменения текста при клике
 function changeText(event) {
-    if (textIndex >= heartText.length) return;
-
     const textElement = document.createElement('div');
     textElement.classList.add('text');
     textElement.textContent = heartText[textIndex];
 
+    // Позиционирование текста на месте клика
     textElement.style.left = `${event.clientX - 50}px`;
     textElement.style.top = `${event.clientY - 30}px`;
 
     document.body.appendChild(textElement);
+    
+    // Переход к следующему тексту
+    textIndex = (textIndex + 1) % heartText.length;
 
-    textIndex++;
-
-    if (textIndex === heartText.length) {
-        setTimeout(showButton, 1000);
-    }
-
+    // Плавное исчезновение текста через 1.5 секунды
     setTimeout(() => textElement.style.opacity = 0, 1500);
     setTimeout(() => textElement.remove(), 2000);
 }
@@ -180,9 +91,13 @@ document.body.addEventListener('click', (event) => {
 
     changeText(event);
 
+    // Запуск музыки при первом клике, если она еще не начала играть
     if (!musicStarted) {
         const audio = document.getElementById('background-music');
         audio.play();
         musicStarted = true;
     }
 });
+
+// Запускаем первое сердце
+createFallingHeart();

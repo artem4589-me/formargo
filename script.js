@@ -30,18 +30,21 @@ const heartText = [
 let textIndex = 0;
 let musicStarted = false; // Переменная для отслеживания запуска музыки
 
-// Функция для создания сердца по месту клика
-function createHeart(event) {
+// Функция для создания падающих сердец сверху вниз
+function createFallingHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.innerHTML = '❤️';
-    heart.style.left = `${event.clientX - 25}px`; // Позиционирование по оси X
-    heart.style.top = `${event.clientY - 25}px`;  // Позиционирование по оси Y
+
+    // Позиционируем сердца случайным образом по горизонтали
+    heart.style.left = `${Math.random() * 100}vw`;
+    heart.style.animationDuration = `${Math.random() * 3 + 3}s`; // Разная скорость падения
+
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 3000); // Удаляем сердце через 3 секунды
+    setTimeout(() => heart.remove(), 5000); // Удаляем сердце через 5 секунд
 }
 
-// Функция для изменения текста
+// Функция для изменения текста при клике
 function changeText(event) {
     const textElement = document.createElement('div');
     textElement.classList.add('text');
@@ -61,9 +64,14 @@ function changeText(event) {
     setTimeout(() => textElement.remove(), 2000); // Удаляем текст через 2 секунды
 }
 
-// Слушаем клик по экрану, чтобы создавать сердце и менять текст
+// Слушаем клик по экрану, чтобы менять текст
 document.body.addEventListener('click', (event) => {
-    createHeart(event);
+    // Скрываем начальный текст "Нажми на экран..."
+    const initialText = document.getElementById('text');
+    if (initialText) {
+        initialText.style.display = 'none'; // Убираем текст при первом клике
+    }
+
     changeText(event);
 
     // Запуск музыки при первом клике, если она еще не начала играть
@@ -74,14 +82,9 @@ document.body.addEventListener('click', (event) => {
     }
 });
 
-// Создаем сердца каждую секунду, чтобы они падали сверху (увеличиваем количество)
+// Запускаем падение сердец сверху каждые 100 мс (раньше было 1 сек)
 setInterval(() => {
-    for (let i = 0; i < 20; i++) { // Теперь создается 3 сердца вместо 1
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        heart.innerHTML = '❤️';
-        heart.style.left = `${Math.random() * 100}%`;
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 3000); // Удаляем сердце через 3 секунды
+    for (let i = 0; i < 20; i++) {
+        createFallingHeart();
     }
-}, 1000);
+}, 100);

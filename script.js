@@ -28,6 +28,7 @@ const heartText = [
 ];
 
 let textIndex = 0;
+let musicStarted = false; // Переменная для отслеживания запуска музыки
 
 // Функция для создания сердца по месту клика
 function createHeart(event) {
@@ -59,10 +60,12 @@ function changeText() {
 document.body.addEventListener('click', (event) => {
     createHeart(event);
     changeText();
-    // Запуск музыки по клику (если музыка не играет)
-    const audio = document.getElementById('background-music');
-    if (audio.paused) {
-        audio.play();
+
+    // Запуск музыки при первом клике, если она еще не начала играть
+    if (!musicStarted) {
+        const audio = document.getElementById('background-music');
+        audio.play(); // Запуск музыки
+        musicStarted = true; // Флаг, чтобы музыка не запускалась повторно
     }
 });
 

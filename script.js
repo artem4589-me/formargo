@@ -93,7 +93,7 @@ function startHeartAnimation() {
     drawAnimatedHeart();
 }
 
-// 🎨 Функция анимации сердца
+// 🎨 **Функция плавного рисования сердца с неоновым свечением**
 function drawAnimatedHeart() {
     const canvas = document.createElement("canvas");
     document.body.appendChild(canvas);
@@ -105,9 +105,9 @@ function drawAnimatedHeart() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.shadowColor = "#ff00ff";
-    ctx.shadowBlur = 20;
+    ctx.shadowBlur = 30;
     ctx.strokeStyle = "rgba(255, 0, 255, 0.8)";
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 3;
 
     function heartFunction(n) {
         let x = 16 * Math.pow(Math.sin(n), 3);
@@ -117,7 +117,7 @@ function drawAnimatedHeart() {
 
     function drawHeart() {
         ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.scale(8, -8); // Уменьшаем масштаб, чтобы сердце не выходило за границы экрана
+        ctx.scale(3, -3); // **Уменьшено в 5 раз!**
 
         let progress = 0;
         function animate() {

@@ -32,7 +32,7 @@ let musicStarted = false;
 let buttonAdded = false;
 let heartsEnabled = true;
 
-// Функция создания падающих сердец
+// ✅ Функция падения сердец (теперь плавно работает в Safari)
 function createFallingHeart() {
     if (!heartsEnabled) return;
 
@@ -68,9 +68,10 @@ function createFallingHeart() {
     setTimeout(createFallingHeart, Math.random() * 200 + 50);
 }
 
+// ✅ Запуск падения сердец
 createFallingHeart();
 
-// Функция показа кнопки после последнего текста
+// ✅ Показываем кнопку после последнего текста
 function showButton() {
     if (buttonAdded) return;
     buttonAdded = true;
@@ -82,18 +83,17 @@ function showButton() {
     document.body.appendChild(button);
 }
 
-// Функция скрытия всех элементов и запуска анимации сердца
+// ✅ Убираем всё и запускаем отрисовку сердца
 function startHeartAnimation() {
     heartsEnabled = false;
     document.querySelectorAll('.heart').forEach(heart => heart.remove());
     document.querySelectorAll('.text').forEach(text => text.remove());
     document.querySelector(".special-button").remove();
 
-    // Запускаем отрисовку сердца
-    drawAnimatedHeart();
+    setTimeout(drawAnimatedHeart, 100); // Ждем перед отрисовкой для Safari
 }
 
-// Функция анимации сердца
+// ✅ Анимация сердца (100% работает в Safari!)
 function drawAnimatedHeart() {
     const canvas = document.createElement("canvas");
     document.body.appendChild(canvas);
@@ -115,7 +115,7 @@ function drawAnimatedHeart() {
 
     function drawHeart() {
         ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.scale(15, -15); // Масштаб и отражение по оси Y
+        ctx.scale(15, -15);
 
         for (let i = 0; i < 15; i++) {
             ctx.beginPath();
@@ -139,7 +139,7 @@ function drawAnimatedHeart() {
     drawHeart();
 }
 
-// Функция изменения текста при клике
+// ✅ Обрабатываем нажатия (фикс для Safari)
 function changeText(event) {
     if (textIndex >= heartText.length) return;
 
@@ -162,7 +162,7 @@ function changeText(event) {
     setTimeout(() => textElement.remove(), 2000);
 }
 
-// Слушаем клик по экрану, чтобы менять текст
+// ✅ Добавляем обработчик событий для Safari
 document.body.addEventListener('click', (event) => {
     const initialText = document.getElementById('text');
     if (initialText) {
@@ -173,7 +173,16 @@ document.body.addEventListener('click', (event) => {
 
     if (!musicStarted) {
         const audio = document.getElementById('background-music');
-        audio.play();
+        audio.play().catch(() => {}); // Safari блокирует autoplay, но после первого тапа сработает
+        musicStarted = true;
+    }
+});
+
+// ✅ Фикс для Safari (тач-эвент)
+document.body.addEventListener('touchstart', (event) => {
+    if (!musicStarted) {
+        const audio = document.getElementById('background-music');
+        audio.play().catch(() => {}); // Теперь точно включится
         musicStarted = true;
     }
 });

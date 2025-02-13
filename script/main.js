@@ -1,125 +1,183 @@
-document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-});
-
-document.addEventListener('keydown', function(e) {
-    if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) {
-        e.preventDefault();
-    }
-});
-
-const messages = [
-"Нажимай где угодно",  
-"Эй, ты ❤️",  
-"Я хочу тебе кое-что сказать",  
-"Попробуй нажать",  
-"Нажми еще раз",  
-"Давай, не сдавайся, нажимай",  
-"Обещаю, это последний раз",  
-"Серьезно",  
-"Это",  
-"Последний",  
-"Но это обман, хехе, хахаха, давай еще!",  
-"Я знаю, ты уже злишься",  
-"Хмм",  
-"Ладно тогда",  
-"А ведь",  
-"Я просто хотел(а) сказать",  
-"Я люблю тебя ❤️",  
-"Офигеть",  
-"Попробуй нажать кнопку внизу 💝"
+const heartText = [
+    "Ты - мое сердце!",
+    "Любовь, которая не исчезнет.",
+    "Ты моя радость каждый день.",
+    "Моя жизнь полна счастья с тобой.",
+    "Ты - мой мир.",
+    "Я так благодарен за тебя.",
+    "Ты — моя навсегда.",
+    "Твоя улыбка делает меня счастливым.",
+    "Ты — моя звезда на этом свете.",
+    "Каждый момент с тобой — это подарок.",
+    "Ты — моя сила и моя слабость.",
+    "Я люблю все в тебе.",
+    "Ты — смысл моего существования.",
+    "Я горжусь тем, что могу быть рядом с тобой.",
+    "Ты — мой идеал.",
+    "Без тебя мир был бы пустым.",
+    "Я всегда буду поддерживать тебя.",
+    "Ты — моя вдохновляющая муза.",
+    "С тобой каждый день — это новый чудесный момент.",
+    "Я не представляю своей жизни без тебя.",
+    "Ты — самое красивое, что есть в моей жизни.",
+    "Твои глаза — мое небо.",
+    "Твоя душа такая нежная и светлая.",
+    "Ты наполняешь меня смыслом и радостью.",
+    "Ты — мой самый лучший друг и любимый человек.",
+    "Каждая минута с тобой — это счастье."
 ];
 
-let currentPage = 0;
-let isLastPage = false;
+let textIndex = 0;
+let musicStarted = false;
+let buttonAdded = false;
+let heartsEnabled = true;
 
-function showMessage() {
-    $('.message').text(messages[currentPage]);
-    
-    isLastPage = currentPage === messages.length - 1;
-    
-    if (isLastPage) {
-        $('.next-button').show();
-        $('.bg_heart').css('cursor', 'default');
-    } else {
-        $('.next-button').hide();
-        $('.bg_heart').css('cursor', 'pointer');
+// Функция создания падающих сердец
+function createFallingHeart() {
+    if (!heartsEnabled) return;
+
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.innerHTML = '❤️';
+
+    let xPosition = Math.random() * 100;
+    heart.style.left = `${xPosition}vw`;
+    heart.style.top = `-50px`;
+
+    document.body.appendChild(heart);
+
+    let speed = Math.random() * 2 + 1;
+    let position = -50;
+
+    function animateHeart() {
+        if (!heartsEnabled) {
+            heart.remove();
+            return;
+        }
+        position += speed;
+        heart.style.transform = `translateY(${position}px)`;
+
+        if (position < window.innerHeight) {
+            requestAnimationFrame(animateHeart);
+        } else {
+            heart.remove();
+        }
     }
+    requestAnimationFrame(animateHeart);
+
+    setTimeout(createFallingHeart, Math.random() * 200 + 50);
 }
 
-$('.bg_heart').on('click', function() {
-    if (!isLastPage) {
-        currentPage++;
-        showMessage();
+createFallingHeart();
+
+// Функция показа кнопки после последнего текста
+function showButton() {
+    if (buttonAdded) return;
+    buttonAdded = true;
+
+    const button = document.createElement('button');
+    button.innerText = "Нажми на меня";
+    button.classList.add('special-button');
+    button.onclick = startHeartAnimation;
+    document.body.appendChild(button);
+}
+
+// Функция скрытия всех элементов и запуска анимации сердца
+function startHeartAnimation() {
+    heartsEnabled = false;
+    document.querySelectorAll('.heart').forEach(heart => heart.remove());
+    document.querySelectorAll('.text').forEach(text => text.remove());
+    document.querySelector(".special-button").remove();
+
+    // Запускаем отрисовку сердца
+    drawAnimatedHeart();
+}
+
+// 🎨 **Функция плавного рисования сердца с неоновым свечением**
+function drawAnimatedHeart() {
+    const canvas = document.createElement("canvas");
+    document.body.appendChild(canvas);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext("2d");
+
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.shadowColor = "#ff00ff";
+    ctx.shadowBlur = 30;
+    ctx.strokeStyle = "rgba(255, 0, 255, 0.8)";
+    ctx.lineWidth = 3;
+
+    function heartFunction(n) {
+        let x = 16 * Math.pow(Math.sin(n), 3);
+        let y = 13 * Math.cos(n) - 5 * Math.cos(2 * n) - 2 * Math.cos(3 * n) - Math.cos(4 * n);
+        return { x, y };
+    }
+
+    function drawHeart() {
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.scale(3, -3); // **Уменьшено в 5 раз!**
+
+        let progress = 0;
+        function animate() {
+            ctx.beginPath();
+            for (let n = 0; n <= progress; n += 0.1) {
+                let { x, y } = heartFunction(n);
+                if (n === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.stroke();
+
+            if (progress < Math.PI * 2) {
+                progress += 0.05;
+                requestAnimationFrame(animate);
+            }
+        }
+        animate();
+    }
+
+    drawHeart();
+}
+
+// Функция изменения текста при клике
+function changeText(event) {
+    if (textIndex >= heartText.length) return;
+
+    const textElement = document.createElement('div');
+    textElement.classList.add('text');
+    textElement.textContent = heartText[textIndex];
+
+    textElement.style.left = `${event.clientX - 50}px`;
+    textElement.style.top = `${event.clientY - 30}px`;
+
+    document.body.appendChild(textElement);
+
+    textIndex++;
+
+    if (textIndex === heartText.length) {
+        setTimeout(showButton, 1000);
+    }
+
+    setTimeout(() => textElement.style.opacity = 0, 1500);
+    setTimeout(() => textElement.remove(), 2000);
+}
+
+// Слушаем клик по экрану, чтобы менять текст
+document.body.addEventListener('click', (event) => {
+    const initialText = document.getElementById('text');
+    if (initialText) {
+        initialText.style.display = 'none';
+    }
+
+    changeText(event);
+
+    if (!musicStarted) {
+        const audio = document.getElementById('background-music');
+        audio.play();
+        musicStarted = true;
     }
 });
-
-var love = setInterval(function() {
-    var r_num = Math.floor(Math.random() * 40) + 1;
-    var r_size = Math.floor(Math.random() * 65) + 10;
-    var r_left = Math.floor(Math.random() * 100) + 1;
-    var r_bg = Math.floor(Math.random() * 25) + 100;
-    var r_time = Math.floor(Math.random() * 5) + 5;
-    
-    $('.bg_heart').append("<div class='heart' style='width:" + r_size + "px;height:" + r_size + "px;left:" + r_left + "%;background:rgba(255," + (r_bg - 25) + "," + r_bg + ",1);animation:love " + r_time + "s ease'></div>");
-    
-    $('.bg_heart').append("<div class='heart' style='width:" + (r_size - 10) + "px;height:" + (r_size - 10) + "px;left:" + (r_left + r_num) + "%;background:rgba(255," + (r_bg - 25) + "," + (r_bg + 25) + ",1);animation:love " + (r_time + 5) + "s ease'></div>");
-    
-    $('.heart').each(function() {
-        var top = parseFloat($(this).css("top"));
-        var width = parseFloat($(this).css("width"));
-        if (top <= -100 || width >= 150) {
-            $(this).remove();
-        }
-    });
-}, 500);
-
-showMessage();
-
-function clearMusicState() {
-    localStorage.removeItem('musicPlaying');
-    localStorage.removeItem('musicCurrentTime');
-}
-
-window.onload = function() {
-    clearMusicState(); 
-}
-
-function setupMusic() {
-    const music = document.getElementById('backgroundMusic');
-    
-    if (!localStorage.getItem('initialLoad')) {
-        clearMusicState();
-        localStorage.setItem('initialLoad', 'true');
-        music.currentTime = 0;
-    }
-
-    const isMusicPlaying = localStorage.getItem('musicPlaying') === 'true';
-    const musicCurrentTime = localStorage.getItem('musicCurrentTime') || 0;
-
-    if (isMusicPlaying) {
-        music.currentTime = parseFloat(musicCurrentTime);
-        music.play().catch(error => console.log('Playback failed', error));
-    }
-
-    music.addEventListener('play', () => {
-        localStorage.setItem('musicPlaying', 'true');
-    });
-
-    music.addEventListener('pause', () => {
-        localStorage.setItem('musicPlaying', 'false');
-    });
-
-    setInterval(() => {
-        localStorage.setItem('musicCurrentTime', music.currentTime);
-    }, 1000);
-
-    document.addEventListener('click', function startMusic() {
-        music.play().catch(error => {
-            console.log('Autoplay prevented', error);
-        });
-        document.removeEventListener('click', startMusic);
-    });
-}
-
-document.addEventListener('DOMContentLoaded', setupMusic);

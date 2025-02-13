@@ -26,6 +26,7 @@ function init() {
   loaded = true;
   var mobile = window.isDevice;
   var koef = mobile ? 0.5 : 1;
+  var scaleFactor = 0.5; // Уменьшаем масштаб сердца в 2 раза
   var canvas = document.getElementById("heart");
   var ctx = canvas.getContext("2d");
   var width = (canvas.width = koef * innerWidth);
@@ -36,10 +37,10 @@ function init() {
   ctx.fillRect(0, 0, width, height);
 
   function drawText() {
-    ctx.font = "60px Arial";
+    ctx.font = "30px Arial"; // Уменьшил размер текста в 2 раза
     ctx.fillStyle = "lightblue";
     ctx.textAlign = "center";
-    ctx.fillText("I love you", width / 2, height / 2.2 + 400);
+    ctx.fillText("I love you", width / 2, height / 2.2 + 200);
   }
 
   function heartPosition(rad) {
@@ -55,7 +56,7 @@ function init() {
   }
 
   function scaleAndTranslate(pos, sx, sy, dx, dy) {
-    return [dx + pos[0] * sx, dy + pos[1] * sy];
+    return [dx + pos[0] * sx * scaleFactor, dy + pos[1] * sy * scaleFactor];
   }
 
   window.addEventListener("resize", function () {
@@ -157,30 +158,6 @@ function init() {
   loop();
 }
 
-function continueMusic() {
-  const music = document.getElementById("background-music");
-
-  const isMusicPlaying = localStorage.getItem("musicPlaying") === "true";
-  const musicCurrentTime = localStorage.getItem("musicCurrentTime") || 0;
-
-  if (music) {
-    if (isMusicPlaying) {
-      music.currentTime = parseFloat(musicCurrentTime);
-      music.play().catch((error) =>
-        console.log("Music playback failed", error)
-      );
-    }
-  }
-
-  document.addEventListener("click", function startMusic() {
-    if (music && !isMusicPlaying) {
-      music.play().catch((error) => console.log("Autoplay prevented", error));
-      document.removeEventListener("click", startMusic);
-    }
-  });
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   init();
-  continueMusic();
 });

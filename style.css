@@ -42,8 +42,8 @@ body {
     transition: opacity 0.5s;
 }
 
-/* Кнопка "Нажми на меня" */
-.special-button {
+/* Кнопка "Нажми на кнопку" */
+.next-button {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -55,6 +55,7 @@ body {
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 /* Неоновый стиль */

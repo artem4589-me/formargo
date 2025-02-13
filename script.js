@@ -64,7 +64,9 @@ function showButton() {
     button.classList.add('special-button');
     
     button.onclick = function() {
-        window.location.href = 'love.html';  // Переход на страницу с сердцем
+        setTimeout(() => {
+            window.location.href = './love.html';
+        }, 300); // Добавил задержку перед переходом, чтобы Safari обработал событие
     };
 
     document.body.appendChild(button);
@@ -76,7 +78,14 @@ document.body.addEventListener('click', (event) => {
 
     if (!musicStarted) {
         const audio = document.getElementById('backgroundMusic');
-        audio.play();
-        musicStarted = true;
+
+        if (audio) {
+            audio.play().catch(error => {
+                console.log("Safari блокирует автозапуск музыки. Включаем при клике.");
+            });
+            musicStarted = true;
+        } else {
+            console.error("Файл самоlet.mp3 не найден.");
+        }
     }
 });

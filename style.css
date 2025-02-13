@@ -56,3 +56,10 @@ body {
     border-radius: 10px;
     cursor: pointer;
 }
+
+/* Неоновый стиль */
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}

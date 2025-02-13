@@ -32,7 +32,7 @@ let musicStarted = false;
 let buttonAdded = false;
 let heartsEnabled = true;
 
-// ✅ Функция падения сердец (теперь плавно работает в Safari)
+// Функция создания падающих сердец
 function createFallingHeart() {
     if (!heartsEnabled) return;
 
@@ -68,10 +68,9 @@ function createFallingHeart() {
     setTimeout(createFallingHeart, Math.random() * 200 + 50);
 }
 
-// ✅ Запуск падения сердец
 createFallingHeart();
 
-// ✅ Показываем кнопку после последнего текста
+// Функция показа кнопки после последнего текста
 function showButton() {
     if (buttonAdded) return;
     buttonAdded = true;
@@ -83,17 +82,18 @@ function showButton() {
     document.body.appendChild(button);
 }
 
-// ✅ Убираем всё и запускаем отрисовку сердца
+// Функция скрытия всех элементов и запуска анимации сердца
 function startHeartAnimation() {
     heartsEnabled = false;
     document.querySelectorAll('.heart').forEach(heart => heart.remove());
     document.querySelectorAll('.text').forEach(text => text.remove());
     document.querySelector(".special-button").remove();
 
-    setTimeout(drawAnimatedHeart, 100); // Ждем перед отрисовкой для Safari
+    // Запускаем отрисовку сердца
+    drawAnimatedHeart();
 }
 
-// ✅ Анимация сердца (100% работает в Safari!)
+// 🎨 Функция анимации сердца
 function drawAnimatedHeart() {
     const canvas = document.createElement("canvas");
     document.body.appendChild(canvas);
@@ -104,8 +104,10 @@ function drawAnimatedHeart() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.strokeStyle = "red";
-    ctx.lineWidth = 2;
+    ctx.shadowColor = "#ff00ff";
+    ctx.shadowBlur = 20;
+    ctx.strokeStyle = "rgba(255, 0, 255, 0.8)";
+    ctx.lineWidth = 4;
 
     function heartFunction(n) {
         let x = 16 * Math.pow(Math.sin(n), 3);
@@ -115,31 +117,33 @@ function drawAnimatedHeart() {
 
     function drawHeart() {
         ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.scale(15, -15);
+        ctx.scale(8, -8); // Уменьшаем масштаб, чтобы сердце не выходило за границы экрана
 
-        for (let i = 0; i < 15; i++) {
+        let progress = 0;
+        function animate() {
             ctx.beginPath();
-
-            for (let n = 0; n <= Math.PI * 2; n += 0.1) {
+            for (let n = 0; n <= progress; n += 0.1) {
                 let { x, y } = heartFunction(n);
-                let newX = x * i;
-                let newY = y * i;
-
                 if (n === 0) {
-                    ctx.moveTo(newX, newY);
+                    ctx.moveTo(x, y);
                 } else {
-                    ctx.lineTo(newX, newY);
+                    ctx.lineTo(x, y);
                 }
             }
-
             ctx.stroke();
+
+            if (progress < Math.PI * 2) {
+                progress += 0.05;
+                requestAnimationFrame(animate);
+            }
         }
+        animate();
     }
 
     drawHeart();
 }
 
-// ✅ Обрабатываем нажатия (фикс для Safari)
+// Функция изменения текста при клике
 function changeText(event) {
     if (textIndex >= heartText.length) return;
 
@@ -162,7 +166,7 @@ function changeText(event) {
     setTimeout(() => textElement.remove(), 2000);
 }
 
-// ✅ Добавляем обработчик событий для Safari
+// Слушаем клик по экрану, чтобы менять текст
 document.body.addEventListener('click', (event) => {
     const initialText = document.getElementById('text');
     if (initialText) {
@@ -173,16 +177,7 @@ document.body.addEventListener('click', (event) => {
 
     if (!musicStarted) {
         const audio = document.getElementById('background-music');
-        audio.play().catch(() => {}); // Safari блокирует autoplay, но после первого тапа сработает
-        musicStarted = true;
-    }
-});
-
-// ✅ Фикс для Safari (тач-эвент)
-document.body.addEventListener('touchstart', (event) => {
-    if (!musicStarted) {
-        const audio = document.getElementById('background-music');
-        audio.play().catch(() => {}); // Теперь точно включится
+        audio.play();
         musicStarted = true;
     }
 });

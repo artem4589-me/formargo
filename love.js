@@ -26,7 +26,7 @@ function init() {
   loaded = true;
   var mobile = window.isDevice;
   var koef = mobile ? 0.5 : 1;
-  var scaleFactor = 0.15; // **Сердце уменьшено в 4 раза от оригинального размера**
+  var scaleFactor = 0.20; // **Сердце уменьшено в 4 раза от оригинального размера**
   var canvas = document.getElementById("heart");
   var ctx = canvas.getContext("2d");
   var width = (canvas.width = koef * innerWidth);

@@ -24,12 +24,71 @@ const heartText = [
     "Твоя душа такая нежная и светлая.",
     "Ты наполняешь меня смыслом и радостью.",
     "Ты — мой самый лучший друг и любимый человек.",
-    "Каждая минута с тобой — это счастье."
+    "Каждая минута с тобой — это счастье.",
+    "Попробуй нажать кнопку внизу 💝"
 ];
 
 let textIndex = 0;
 let musicStarted = false;
 let buttonAdded = false;
+let heartsEnabled = true;
+
+// Функция создания падающих сердец (ВЕРНУЛ ЕЁ!)
+function createFallingHeart() {
+    if (!heartsEnabled) return;
+
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.innerHTML = '❤️';
+
+    let xPosition = Math.random() * 100;
+    heart.style.left = `${xPosition}vw`;
+    heart.style.top = `-50px`;
+
+    document.body.appendChild(heart);
+
+    let speed = Math.random() * 2 + 1;
+    let position = -50;
+
+    function animateHeart() {
+        if (!heartsEnabled) {
+            heart.remove();
+            return;
+        }
+        position += speed;
+        heart.style.transform = `translateY(${position}px)`;
+
+        if (position < window.innerHeight) {
+            requestAnimationFrame(animateHeart);
+        } else {
+            heart.remove();
+        }
+    }
+    requestAnimationFrame(animateHeart);
+
+    setTimeout(createFallingHeart, Math.random() * 200 + 50);
+}
+
+// Запускаем падение сердец
+createFallingHeart();
+
+// Функция показа кнопки после последней фразы
+function showButton() {
+    if (buttonAdded) return;
+    buttonAdded = true;
+
+    const button = document.createElement('button');
+    button.innerText = "Нажми на меня";
+    button.classList.add('special-button');
+
+    button.onclick = function() {
+        setTimeout(() => {
+            window.location.href = './love.html'; // Переход на страницу с сердцем
+        }, 300);
+    };
+
+    document.body.appendChild(button);
+}
 
 // Функция изменения текста при клике
 function changeText(event) {
@@ -54,31 +113,12 @@ function changeText(event) {
     setTimeout(() => textElement.remove(), 2000);
 }
 
-// Функция показа кнопки
-function showButton() {
-    if (buttonAdded) return;
-    buttonAdded = true;
-
-    const button = document.createElement('button');
-    button.innerText = "Нажми на меня";
-    button.classList.add('special-button');
-    
-    button.onclick = function() {
-        setTimeout(() => {
-            window.location.href = './love.html';
-        }, 300); // Добавил задержку перед переходом, чтобы Safari обработал событие
-    };
-
-    document.body.appendChild(button);
-}
-
 // Слушаем клик по экрану, чтобы менять текст
 document.body.addEventListener('click', (event) => {
     changeText(event);
 
     if (!musicStarted) {
         const audio = document.getElementById('backgroundMusic');
-
         if (audio) {
             audio.play().catch(error => {
                 console.log("Safari блокирует автозапуск музыки. Включаем при клике.");

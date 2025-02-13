@@ -27,6 +27,7 @@ $('.bg_heart').on('click', function() {
   }
 });
 
+// Падающие сердечки
 setInterval(function() {
   let r_size = Math.floor(Math.random() * 65) + 10;
   let r_left = Math.floor(Math.random() * 100) + 1;

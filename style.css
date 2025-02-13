@@ -14,25 +14,11 @@ body {
     position: relative;
 }
 
-.header-text {
-    font-family: 'Pacifico', cursive;
-    font-size: 36px;
-    color: #ff66b2;
+.heart {
     position: absolute;
-    top: 20px;
-    width: 100%;
-    text-align: center;
-    z-index: 2;
-}
-
-.text {
-    position: absolute;
-    font-size: 18px;
-    color: white;
-    text-align: center;
-    pointer-events: none;
-    opacity: 1;
-    transition: opacity 0.5s;
+    font-size: 2rem;
+    top: -50px;
+    transition: transform linear;
 }
 
 /* Кнопка "Нажми на меня" */

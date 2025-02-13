@@ -24,7 +24,8 @@ const heartText = [
     "Твоя душа такая нежная и светлая.",
     "Ты наполняешь меня смыслом и радостью.",
     "Ты — мой самый лучший друг и любимый человек.",
-    "Каждая минута с тобой — это счастье."
+    "Каждая минута с тобой — это счастье.",
+    "Попробуй нажать кнопку внизу 💝"
 ];
 
 let textIndex = 0;
@@ -78,69 +79,14 @@ function showButton() {
     const button = document.createElement('button');
     button.innerText = "Нажми на меня";
     button.classList.add('special-button');
-    button.onclick = startHeartAnimation;
+
+    button.onclick = function() {
+        setTimeout(() => {
+            window.location.href = './love.html'; // Переход на страницу с сердцем
+        }, 300);
+    };
+
     document.body.appendChild(button);
-}
-
-// Функция скрытия всех элементов и запуска анимации сердца
-function startHeartAnimation() {
-    heartsEnabled = false;
-    document.querySelectorAll('.heart').forEach(heart => heart.remove());
-    document.querySelectorAll('.text').forEach(text => text.remove());
-    document.querySelector(".special-button").remove();
-
-    // Запускаем отрисовку сердца
-    drawAnimatedHeart();
-}
-
-// 🎨 **Функция плавного рисования сердца с неоновым свечением**
-function drawAnimatedHeart() {
-    const canvas = document.createElement("canvas");
-    document.body.appendChild(canvas);
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const ctx = canvas.getContext("2d");
-
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.shadowColor = "#ff00ff";
-    ctx.shadowBlur = 30;
-    ctx.strokeStyle = "rgba(255, 0, 255, 0.8)";
-    ctx.lineWidth = 3;
-
-    function heartFunction(n) {
-        let x = 16 * Math.pow(Math.sin(n), 3);
-        let y = 13 * Math.cos(n) - 5 * Math.cos(2 * n) - 2 * Math.cos(3 * n) - Math.cos(4 * n);
-        return { x, y };
-    }
-
-    function drawHeart() {
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.scale(3, -3); // **Уменьшено в 5 раз!**
-
-        let progress = 0;
-        function animate() {
-            ctx.beginPath();
-            for (let n = 0; n <= progress; n += 0.1) {
-                let { x, y } = heartFunction(n);
-                if (n === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-            }
-            ctx.stroke();
-
-            if (progress < Math.PI * 2) {
-                progress += 0.05;
-                requestAnimationFrame(animate);
-            }
-        }
-        animate();
-    }
-
-    drawHeart();
 }
 
 // Функция изменения текста при клике
@@ -155,9 +101,9 @@ function changeText(event) {
     textElement.style.top = `${event.clientY - 30}px`;
 
     document.body.appendChild(textElement);
-
     textIndex++;
 
+    // Если последняя фраза - показать кнопку
     if (textIndex === heartText.length) {
         setTimeout(showButton, 1000);
     }
@@ -168,16 +114,17 @@ function changeText(event) {
 
 // Слушаем клик по экрану, чтобы менять текст
 document.body.addEventListener('click', (event) => {
-    const initialText = document.getElementById('text');
-    if (initialText) {
-        initialText.style.display = 'none';
-    }
-
     changeText(event);
 
     if (!musicStarted) {
         const audio = document.getElementById('background-music');
-        audio.play();
-        musicStarted = true;
+        if (audio) {
+            audio.play().catch(error => {
+                console.log("Safari блокирует автозапуск музыки. Включаем при клике.");
+            });
+            musicStarted = true;
+        } else {
+            console.error("Файл самоlet.mp3 не найден.");
+        }
     }
 });

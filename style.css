@@ -32,6 +32,7 @@ body {
     transition: transform linear;
 }
 
+/* Текстовые сообщения */
 .text {
     position: absolute;
     font-size: 18px;
@@ -44,22 +45,23 @@ body {
 
 /* Кнопка "Нажми на меня" */
 .special-button {
-    position: absolute;
+    position: fixed;
+    bottom: 50px;
     left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     padding: 15px 30px;
-    font-size: 24px;
-    background: linear-gradient(90deg, #ff00ff, #00ffff);
+    background-color: #ff4d6d;
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 25px;
+    font-size: 1.2em;
     cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-/* Неоновый стиль */
-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
+.special-button:hover {
+    background-color: #ff3357;
+    transform: translateX(-50%) scale(1.05);
 }

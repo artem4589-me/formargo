@@ -26,7 +26,7 @@ function init() {
   loaded = true;
   var mobile = window.isDevice;
   var koef = mobile ? 0.5 : 1;
-  var scaleFactor = 0.5; // Уменьшаем масштаб сердца в 2 раза
+  var scaleFactor = 0.25; // **Сердце уменьшено в 4 раза от оригинального размера**
   var canvas = document.getElementById("heart");
   var ctx = canvas.getContext("2d");
   var width = (canvas.width = koef * innerWidth);
@@ -37,10 +37,10 @@ function init() {
   ctx.fillRect(0, 0, width, height);
 
   function drawText() {
-    ctx.font = "30px Arial"; // Уменьшил размер текста в 2 раза
+    ctx.font = "20px Arial"; // Уменьшил текст
     ctx.fillStyle = "lightblue";
     ctx.textAlign = "center";
-    ctx.fillText("I love you", width / 2, height / 2.2 + 200);
+    ctx.fillText("I love you", width / 2, height / 2.2 + 100);
   }
 
   function heartPosition(rad) {

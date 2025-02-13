@@ -30,57 +30,6 @@ const heartText = [
 let textIndex = 0;
 let musicStarted = false;
 let buttonAdded = false;
-let heartsEnabled = true;
-
-// Функция создания падающих сердец
-function createFallingHeart() {
-    if (!heartsEnabled) return;
-
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    heart.innerHTML = '❤️';
-
-    let xPosition = Math.random() * 100;
-    heart.style.left = `${xPosition}vw`;
-    heart.style.top = `-50px`;
-
-    document.body.appendChild(heart);
-
-    let speed = Math.random() * 2 + 1;
-    let position = -50;
-
-    function animateHeart() {
-        if (!heartsEnabled) {
-            heart.remove();
-            return;
-        }
-        position += speed;
-        heart.style.transform = `translateY(${position}px)`;
-
-        if (position < window.innerHeight) {
-            requestAnimationFrame(animateHeart);
-        } else {
-            heart.remove();
-        }
-    }
-    requestAnimationFrame(animateHeart);
-
-    setTimeout(createFallingHeart, Math.random() * 200 + 50);
-}
-
-createFallingHeart();
-
-// Функция показа кнопки после последнего текста
-function showButton() {
-    if (buttonAdded) return;
-    buttonAdded = true;
-
-    const button = document.createElement('a');
-    button.innerText = "Нажми на кнопку";
-    button.classList.add('next-button');
-    button.href = "love.html";
-    document.body.appendChild(button);
-}
 
 // Функция изменения текста при клике
 function changeText(event) {
@@ -94,15 +43,31 @@ function changeText(event) {
     textElement.style.top = `${event.clientY - 30}px`;
 
     document.body.appendChild(textElement);
-
     textIndex++;
 
+    // Если последняя фраза - показать кнопку
     if (textIndex === heartText.length) {
         setTimeout(showButton, 1000);
     }
 
     setTimeout(() => textElement.style.opacity = 0, 1500);
     setTimeout(() => textElement.remove(), 2000);
+}
+
+// Функция показа кнопки
+function showButton() {
+    if (buttonAdded) return;
+    buttonAdded = true;
+
+    const button = document.createElement('button');
+    button.innerText = "Нажми на меня";
+    button.classList.add('special-button');
+    
+    button.onclick = function() {
+        window.location.href = 'love.html';  // Переход на страницу с сердцем
+    };
+
+    document.body.appendChild(button);
 }
 
 // Слушаем клик по экрану, чтобы менять текст

@@ -1,9 +1,23 @@
-canvas {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.2);
+body {
+  background: black;
+  color: white;
+  text-align: center;
+}
+
+.bg_heart {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.heart {
+  position: absolute;
+  top: -50%;
+  transform: rotate(-45deg);
+}
+
+@keyframes love {
+  0% {
+      top: 110%;
   }
-  
+}

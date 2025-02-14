@@ -68,12 +68,14 @@ function init() {
   var traceCount = mobile ? 20 : 50;
   var pointsOrigin = [];
   var dr = mobile ? 0.3 : 0.1;
+
+  // 🔴 **Сердце уменьшено в 3 раза!**
   for (var i = 0; i < Math.PI * 2; i += dr)
-    pointsOrigin.push(scaleAndTranslate(heartPosition(i), 310, 19, 0, 0));
+    pointsOrigin.push(scaleAndTranslate(heartPosition(i), 100, 6, 0, 0));
   for (var i = 0; i < Math.PI * 2; i += dr)
-    pointsOrigin.push(scaleAndTranslate(heartPosition(i), 250, 15, 0, 0));
+    pointsOrigin.push(scaleAndTranslate(heartPosition(i), 80, 5, 0, 0));
   for (var i = 0; i < Math.PI * 2; i += dr)
-    pointsOrigin.push(scaleAndTranslate(heartPosition(i), 190, 11, 0, 0));
+    pointsOrigin.push(scaleAndTranslate(heartPosition(i), 60, 3, 0, 0));
 
   var heartPointsCount = pointsOrigin.length;
   var targetPoints = [];
@@ -157,6 +159,17 @@ function init() {
   loop();
 }
 
+// 🎯 **Функция центрирования кнопки после 3 секунд**
+setTimeout(() => {
+  const button = document.createElement("button");
+  button.innerText = "Нажми на меня";
+  button.classList.add("next-button");
+  button.onclick = () => (window.location.href = "heart.html");
+
+  document.body.appendChild(button);
+}, 3000);
+
+// 🎵 **Функция воспроизведения музыки**
 function continueMusic() {
   const music = document.getElementById("background-music");
 

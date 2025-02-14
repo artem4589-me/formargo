@@ -1,17 +1,21 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: black; /* Фон полностью чёрный */
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.next-button {
+  position: fixed;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  padding: 15px 30px;
+  background-color: #ff4d6d;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1.5em;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-canvas {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
+.next-button:hover {
+  background-color: #ff3357;
+  transform: translate(-50%, 50%) scale(1.05);
 }

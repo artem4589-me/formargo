@@ -4,29 +4,25 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Любовь ❤️</title>
+  <title>❤️</title>
   <link rel="stylesheet" href="love.css">
 </head>
 <body>
   <canvas id="heart"></canvas>
+
   <audio id="background-music" loop>
     <source src="https://github.com/artem4589-me/formargo/raw/master/samolet.mp3" type="audio/mpeg">
-    Ваш браузер не поддерживает аудио.
+    Your browser does not support the audio element.
   </audio>
 
-  <!-- Кнопка для перехода на heart.html -->
-  <button id="next-button" class="next-button" onclick="goToHeart()" style="display: none;">Нажми на меня</button>
+  <!-- 🔴 Кнопка для перехода на heart.html (Добавлена сразу!) -->
+  <button id="nextButton" class="next-button">Нажми на меня</button>
 
   <script src="love.js"></script>
   <script>
-    function goToHeart() {
-      window.location.href = "heart.html"; // Переход на новую страницу
-    }
-
-    // Показываем кнопку через 3 секунды
-    setTimeout(() => {
-      document.getElementById("next-button").style.display = "block";
-    }, 3000);
+    document.getElementById("nextButton").addEventListener("click", function() {
+      window.location.href = "heart.html";
+    });
   </script>
 </body>
 </html>

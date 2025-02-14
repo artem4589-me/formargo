@@ -157,17 +157,20 @@ function init() {
   }
 
   loop();
+
+  // 🎯 **Создаём кнопку сразу**
+  createButton();
 }
 
-// 🎯 **Функция центрирования кнопки после 3 секунд**
-setTimeout(() => {
+// 🎯 **Функция создания кнопки сразу**
+function createButton() {
   const button = document.createElement("button");
   button.innerText = "Нажми на меня";
   button.classList.add("next-button");
   button.onclick = () => (window.location.href = "heart.html");
 
   document.body.appendChild(button);
-}, 3000);
+}
 
 // 🎵 **Функция воспроизведения музыки**
 function continueMusic() {

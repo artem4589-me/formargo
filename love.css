@@ -1,23 +1,36 @@
-/* Стили для кнопки */
-.next-button {
-  display: none;
-  position: fixed;
-  bottom: 50px;
+body {
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  overflow: hidden;
+  margin: 0;
+}
+
+canvas {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+}
+
+button {
+  position: absolute;
+  bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
   padding: 15px 30px;
-  background-color: #ff4d6d;
+  font-size: 24px;
+  background: linear-gradient(90deg, #ff00ff, #ff3366);
   color: white;
   border: none;
-  border-radius: 25px;
-  font-size: 1.2em;
+  border-radius: 30px;
   cursor: pointer;
-  z-index: 1000;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 15px rgba(255, 0, 255, 0.5);
 }
 
-.next-button:hover {
-  background-color: #ff3357;
+button:hover {
+  background: linear-gradient(90deg, #ff3366, #ff00ff);
   transform: translateX(-50%) scale(1.05);
 }

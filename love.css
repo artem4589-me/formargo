@@ -19,7 +19,7 @@ canvas {
 /* Кнопка в центре */
 .next-button {
   position: fixed;
-  top: 50%;
+  top: 15%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 7px 15px;
@@ -36,5 +36,5 @@ canvas {
 
 .next-button:hover {
   background-color: #ff3357;
-  transform: translate(-50%, -50%) scale(1.05);
+  transform: translate(-15%, -50%) scale(1.05);
 }

@@ -22,16 +22,16 @@ canvas {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 15px 30px;
+  padding: 7px 15px;
   background-color: #ff4d6d;
   color: white;
   border: none;
-  border-radius: 25px;
+  border-radius: 14px;
   font-size: 1.5em;
   cursor: pointer;
   z-index: 1000;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.2);
 }
 
 .next-button:hover {
